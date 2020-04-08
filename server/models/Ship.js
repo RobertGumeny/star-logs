@@ -5,7 +5,7 @@ const ObjectId = mongoose.Schema.Types.ObjectId;
 const Ship = new Schema(
   {
     name: { type: String, required: true },
-    class: { type: ObjectId, ref: "Class", required: true },
+    class: { type: ObjectId, ref: "ShipClass", required: true },
     description: { type: String, required: true },
   },
   { timestamps: true, toJSON: { virtuals: true } }

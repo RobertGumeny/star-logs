@@ -3,14 +3,21 @@ import { BadRequest } from "../utils/Errors";
 
 class ShipsService {
   async getAll(query = {}) {
-    let ships = await dbContext.Ships.find(query);
+    let ships = await dbContext.Ships.find(query).populate(
+      "class",
+      "name description"
+    );
     return ships;
   }
   async getById(id) {
-    let ship = await await dbContext.Ships.findById(id);
+    let ship = await dbContext.Ships.findById(id);
     if (!ship) {
       throw new BadRequest("Invalid Id");
     }
+    return ship;
+  }
+  async getByClass(className) {
+    let ship = await dbContext.Ships.find(className);
     return ship;
   }
   async create(body) {

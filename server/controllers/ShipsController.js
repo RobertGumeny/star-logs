@@ -9,12 +9,16 @@ export class ShipsController extends BaseController {
     this.router
       .get("", this.getAll)
       .get("/:id", this.getById)
+      .get("", this.getByClass)
       .put("/:id", this.edit)
       .post("", this.create)
       .delete("/:id", this.delete);
   }
   async getAll(req, res, next) {
     try {
+      if (req.query.className) {
+        return next();
+      }
       let ships = await shipsService.getAll();
       res.send(ships);
     } catch (error) {
@@ -26,6 +30,17 @@ export class ShipsController extends BaseController {
       let ship = await shipsService.getById(req.params.id);
       if (!ship) {
         throw new BadRequest("Invalid Ship ID");
+      }
+      res.send(ship);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getByClass(req, res, next) {
+    try {
+      let ship = await shipsService.getByClass(req.query.className);
+      if (!ship) {
+        throw new BadRequest("Invalid Ship Class");
       }
       res.send(ship);
     } catch (error) {
